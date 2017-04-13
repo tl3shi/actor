@@ -15,26 +15,26 @@ public class Actor<Msg> implements Runnable {
     @SuppressWarnings("serial")
     public static class DeadException extends Exception{};
 
+    private final BlockingQueue<Msg> queue;
+    private final Behavior<Msg> behavior;
+    private STATE state;
+
     interface Behavior<Msg> {
         /**
          * @param self
          * @param msg
          * @return - `false` - stop the actor; `true` - continue
          */
-        public abstract boolean onReceive(Actor<Msg> self, Msg msg);
+        boolean onReceive(Actor<Msg> self, Msg msg);
 
         /**
          * DeadException thrown by the actor `self`. The thread is dead.
-         * 
+         *
          * @param self
          * @param e
          */
-        public abstract void onException(Actor<Msg> self, Exception e);
+        void onException(Actor<Msg> self, Exception e);
     }
-
-    private final BlockingQueue<Msg> queue;
-    private final Behavior<Msg> behavior;
-    private STATE state;
 
     public static <M> Actor<M> create(Behavior<M> behavior) {
         return new Actor<M>(behavior);
@@ -58,6 +58,7 @@ public class Actor<Msg> implements Runnable {
 
     public void run() {
         try {
+            //take will wait until put/offer/add new one
             while (behavior.onReceive(this, queue.take())) {}
         }
         catch (InterruptedException ex) {
