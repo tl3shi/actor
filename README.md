@@ -29,6 +29,7 @@ Output:
 <pre>
 Got: hello
 Got: world
+Got: stop
 </pre>
 
 License
