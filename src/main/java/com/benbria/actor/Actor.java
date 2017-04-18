@@ -46,6 +46,7 @@ public class Actor<Msg> implements Runnable {
         return a;
     }
 
+    // the queue is just the mailbox
     private Actor(Behavior<Msg> behavior, BlockingQueue<Msg> queue) {
         this.state = STATE.alive;
         this.behavior = behavior;
