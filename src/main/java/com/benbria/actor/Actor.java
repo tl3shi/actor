@@ -83,4 +83,10 @@ public class Actor<Msg> implements Runnable {
         }
         return queue.offer(msg);
     }
+
+    //command
+    public void tell(Msg msg) {
+        behavior.onReceive(this, msg);
+    }
+
 }

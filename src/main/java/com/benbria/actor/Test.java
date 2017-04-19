@@ -40,5 +40,26 @@ public class Test {
         actor.send("stop22");
         actor.send("stop23");
         actor.send("stop24");
+
+        Thread.sleep(5000);
+
+        System.err.println("------------------");
+
+        {
+            new Thread(){
+                @Override
+                public void run() {
+                   actor.tell("world xxx");
+                }
+            }.start();
+
+            actor.tell("hello");
+            actor.tell("stop");
+            actor.tell("hello1");
+            actor.tell("stop11");
+            actor.tell("stop22");
+            actor.tell("stop23");
+            actor.tell("stop24");
+        }
     }
 }
